@@ -1,8 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include <string.h>
-#include "display.h"
-#include "globals.h"
+
 
 void updateTask(TASK tasks[], int taskCount, int taskId, const char* newDescription, int newStatus) {
     for (int i = 0; i < taskCount; i++) {

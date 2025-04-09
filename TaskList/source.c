@@ -1,12 +1,22 @@
-/*
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include "display.h"
-#include "globals.h"
+#include <string.h>
 
+#define MAX_TASKS 100
+#define DESC_SIZE 256
 
-// This is to test the implementation
-int main(void) 
+typedef struct taskitem {
+    int id;
+    char description[DESC_SIZE];
+    int completed; // 0 = not completed, 1 = completed
+} TASK;
+
+void updateTask(TASK tasks[], int taskCount, int taskId, const char* newDescription, int newStatus);
+void displaySingleTask(TASK tasks[], int taskCount, int taskId);
+void displayTaskRange(TASK tasks[], int taskCount, int startId, int endId);
+void displayAllTasks(TASK tasks[], int taskCount);
+
+void main(void)
 {
     TASK tasks[MAX_TASKS] = {
         {1, "Complete assignment", 0},
@@ -33,4 +43,3 @@ int main(void)
 
     return 0;
 }
-*/

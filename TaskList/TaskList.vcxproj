@@ -129,10 +129,7 @@
   <ItemGroup>
     <ClCompile Include="display.c" />
     <ClCompile Include="Main.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="display.h" />
-    <ClInclude Include="globals.h" />
+    <ClCompile Include="source.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

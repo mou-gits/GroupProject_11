@@ -2,7 +2,7 @@
 #include "globals.h"
 
 
-typedef struct {
+typedef struct taskitem{
     int id;
     char description[DESC_SIZE];
     int completed; // 0 = not completed, 1 = completed
