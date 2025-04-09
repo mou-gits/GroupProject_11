@@ -1,3 +1,4 @@
+/*
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
@@ -55,3 +56,4 @@ void displayAllTasks(TASK tasks[], int taskCount) {
             tasks[i].completed ? "Yes" : "No");
     }
 }
+*/

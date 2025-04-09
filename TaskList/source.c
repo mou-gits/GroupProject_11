@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX_TASKS 100
+#define MAX_TASKS 50
 #define DESC_SIZE 256
 
 typedef struct taskitem {
