@@ -15,4 +15,7 @@ void displayTaskRange(TASK tasks[], int taskCount, int startId, int endId);
 void displayAllTasks(TASK tasks[], int taskCount);
 void DisplayMainMenu(void);
 void LaunchProperAction(int userInput);
+
+void ObtainUserInput(int* ptUserInput);
+
 void CheckJasonCode(TASK tasks[], int taskCount);

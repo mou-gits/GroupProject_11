@@ -11,21 +11,23 @@ void main(void)
         {3, "Prepare recipe", 1}
     };
     int taskCount = 3;
-
     int UserInput = 0;
-    int UserInputStatus;
 
     do {
+        //Display the Main Menu
         DisplayMainMenu();
-        printf("\nEnter Menu Option: ");
-        UserInputStatus = scanf("%d", &UserInput);
 
-        if (UserInputStatus != 1 || getchar() != '\n') { //This means either scanf failed or there are extra input
-            printf("\nInvalid input!! Try again.\n");
-            while (getchar() != '\n') {}; // Blank loop eating up any extra characters in the input buffer
-            continue; //Display menu again
+        //Obtain user input for main menu options
+        ObtainUserInput(&UserInput);
+
+        //UserInput = 0 -> invalid entry
+        if (UserInput == 0) 
+        {
+            continue;
         }
-        LaunchProperAction(UserInput);       
+        
+        //If proper entry
+        LaunchProperAction(UserInput);
     } while (UserInput != 10);
 
     CheckJasonCode(tasks,taskCount);

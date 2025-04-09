@@ -16,6 +16,7 @@ void DisplayMainMenu(void)
     printf("\n 9. Load task list");
     printf("\n10. Exit");
     printf("\n-----------------------------------------------------");
+    printf("\nEnter Menu Option: ");
 }
 
 void updateTask(TASK tasks[], int taskCount, int taskId, const char* newDescription, int newStatus) {
@@ -26,7 +27,7 @@ void updateTask(TASK tasks[], int taskCount, int taskId, const char* newDescript
                 tasks[i].description[DESC_SIZE - 1] = '\0';
             }
             tasks[i].completed = newStatus;
-            printf("Task %d updated.\n", taskId);
+            printf("\nTask %d updated.", taskId);
             return;
         }
     }
@@ -103,6 +104,8 @@ void LaunchProperAction(int userInput)
     case 9:
         printf("\nLoad tasklist");
         break;
+    default:
+        break;
     }
 }
 
@@ -121,3 +124,15 @@ void CheckJasonCode(TASK tasks[], int taskCount)
     // Test display all
     displayAllTasks(tasks, taskCount);
 }
+
+void ObtainUserInput(int* ptUserInput)
+{
+    int UserInputStatus = scanf("%d", ptUserInput);
+    if (UserInputStatus != 1 || getchar() != '\n') { //This means either scanf failed or there are extra input
+        printf("\nInvalid input!! Try again.\n");
+        while (getchar() != '\n') {}; // Blank loop eating up any extra characters in the input buffer
+        *ptUserInput = 0; //Set Invalid code 
+        return;
+    }
+}
+
