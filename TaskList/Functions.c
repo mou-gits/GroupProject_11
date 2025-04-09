@@ -36,9 +36,9 @@ void updateTask(TASK tasks[], int taskCount, int taskId, const char* newDescript
 void displaySingleTask(TASK tasks[], int taskCount, int taskId) {
     for (int i = 0; i < taskCount; i++) {
         if (tasks[i].id == taskId) {
-            printf("Task ID: %d\nDescription: %s\nCompleted: %s\n",
+            printf("\n%d. %s.(%s)",
                 tasks[i].id, tasks[i].description,
-                tasks[i].completed ? "Yes" : "No");
+                tasks[i].completed ? "Done" : "Pendings");
             return;
         }
     }
@@ -49,9 +49,9 @@ void displayTaskRange(TASK tasks[], int taskCount, int startId, int endId) {
     int found = 0;
     for (int i = 0; i < taskCount; i++) {
         if (tasks[i].id >= startId && tasks[i].id <= endId) {
-            printf("Task ID: %d\nDescription: %s\nCompleted: %s\n\n",
+            printf("\n%d. %s.(%s)",
                 tasks[i].id, tasks[i].description,
-                tasks[i].completed ? "Yes" : "No");
+                tasks[i].completed ? "Done" : "Pendings");
             found = 1;
         }
     }
@@ -66,8 +66,58 @@ void displayAllTasks(TASK tasks[], int taskCount) {
         return;
     }
     for (int i = 0; i < taskCount; i++) {
-        printf("Task ID: %d\nDescription: %s\nCompleted: %s\n\n",
+        printf("\n%d. %s.(%s)",
             tasks[i].id, tasks[i].description,
-            tasks[i].completed ? "Yes" : "No");
+            tasks[i].completed ? "Done" : "Pendings");
     }
+}
+
+void LaunchProperAction(int userInput)
+{
+    switch (userInput)
+    {
+    case 1:
+        printf("\nAdding Tasks");
+        break;
+    case 2:
+        printf("\nDeleting Tasks");
+        break;
+    case 3:
+        printf("\nUpdating Tasks");
+        break;
+    case 4:
+        printf("\nList Task by Id");
+        break;
+    case 5:
+        printf("\nList Task by Id range");
+        break;
+    case 6:
+        printf("\nList all unfinished task");
+        break;
+    case 7:
+        printf("\nList all finished task");
+        break;
+    case 8:
+        printf("\nSave tasklist");
+        break;
+    case 9:
+        printf("\nLoad tasklist");
+        break;
+    }
+}
+
+void CheckJasonCode(TASK tasks[], int taskCount)
+{
+    printf("\nChecking Jason's functions\n");
+    // Test update
+    updateTask(tasks, taskCount, 1, "Complete C project", 1);
+    printf("\n------------------");
+    // Test display single
+    displaySingleTask(tasks, taskCount, 1);
+    printf("\n------------------");
+    // Test display range
+    displayTaskRange(tasks, taskCount, 1, 2);
+    printf("\n------------------");
+    // Test display all
+    displayAllTasks(tasks, taskCount);
 }
