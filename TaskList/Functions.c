@@ -1,7 +1,22 @@
-/*
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include "Functions.h"
 
+void DisplayMainMenu(void)
+{
+    printf("\n---------------     Main Menu        ---------------");
+    printf("\n 1. Add task");
+    printf("\n 2. Delete task");
+    printf("\n 3. Update existing task");
+    printf("\n 4. List task by id");
+    printf("\n 5. List task by id range");
+    printf("\n 6. List all unfinished task");
+    printf("\n 7. List all finished task");
+    printf("\n 8. Save task list");
+    printf("\n 9. Load task list");
+    printf("\n10. Exit");
+    printf("\n-----------------------------------------------------");
+}
 
 void updateTask(TASK tasks[], int taskCount, int taskId, const char* newDescription, int newStatus) {
     for (int i = 0; i < taskCount; i++) {
@@ -56,4 +71,3 @@ void displayAllTasks(TASK tasks[], int taskCount) {
             tasks[i].completed ? "Yes" : "No");
     }
 }
-*/

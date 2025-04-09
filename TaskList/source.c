@@ -1,20 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
-
-#define MAX_TASKS 50
-#define DESC_SIZE 256
-
-typedef struct taskitem {
-    int id;
-    char description[DESC_SIZE];
-    int completed; // 0 = not completed, 1 = completed
-} TASK;
-
-void updateTask(TASK tasks[], int taskCount, int taskId, const char* newDescription, int newStatus);
-void displaySingleTask(TASK tasks[], int taskCount, int taskId);
-void displayTaskRange(TASK tasks[], int taskCount, int startId, int endId);
-void displayAllTasks(TASK tasks[], int taskCount);
+#include "Functions.h"
 
 void main(void)
 {
@@ -25,6 +12,53 @@ void main(void)
     };
     int taskCount = 3;
 
+    int UserInput = 0;
+    int UserInputStatus;
+    do {
+        DisplayMainMenu();
+        printf("\nEnter Menu Option: ");
+        UserInputStatus = scanf("%d", &UserInput);
+
+        if (UserInputStatus != 1 || getchar() != '\n') { //This means either scanf failed or there are extra input
+            printf("\nInvalid input!! Try again.\n");
+            while (getchar() != '\n') {}; // Blank loop eating up any extra characters in the input buffer
+            continue; //Display menu again
+        }
+
+        switch (UserInput)
+        {
+        case 1:
+            printf("\nAdding Tasks");
+            break;
+        case 2:
+            printf("\nDeleting Tasks");
+            break;
+        case 3:
+            printf("\nUpdating Tasks");
+            break;
+        case 4:
+            printf("\nList Task by Id");
+            break;
+        case 5:
+            printf("\nList Task by Id range");
+            break;
+        case 6:
+            printf("\nList all unfinished task");
+            break;
+        case 7:
+            printf("\nList all finished task");
+            break;
+        case 8:
+            printf("\nSave tasklist");
+            break;
+        case 9:
+            printf("\nLoad tasklist");
+            break;
+        }
+
+    } while (UserInput != 10);
+
+    printf("\nChecking Jason's functions");
     // Test update
     printf("\n=== Updating Task ===\n");
     updateTask(tasks, taskCount, 1, "Complete C project", 1);
@@ -40,6 +74,4 @@ void main(void)
     // Test display all
     printf("\n=== Display All Tasks ===\n");
     displayAllTasks(tasks, taskCount);
-
-    return 0;
 }
