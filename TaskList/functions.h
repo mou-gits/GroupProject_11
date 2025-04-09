@@ -1,5 +1,5 @@
 #pragma once
-
+#include <string.h>
 #define MAX_TASKS 50
 #define DESC_SIZE 256
 
@@ -14,8 +14,13 @@ void displaySingleTask(TASK tasks[], int taskCount, int taskId);
 void displayTaskRange(TASK tasks[], int taskCount, int startId, int endId);
 void displayAllTasks(TASK tasks[], int taskCount);
 void DisplayMainMenu(void);
-void LaunchProperAction(int userInput);
-
+void LaunchProperAction(int userInput, TASK tasks[], int* ptTaskCount);
 void ObtainUserInput(int* ptUserInput);
 
 void CheckJasonCode(TASK tasks[], int taskCount);
+
+void MenuCall_ListSingleTask(TASK tasks[], int taskCount);
+void MenuCall_ListRangeTask(TASK tasks[], int taskCount);
+void MenuCall_ListAllFinishedTasks(TASK tasks[], int taskCount);
+void MenuCall_ListAllPendingTasks(TASK tasks[], int taskCount);
+

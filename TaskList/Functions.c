@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <string.h>
 #include "Functions.h"
 
 void DisplayMainMenu(void)
@@ -73,7 +74,7 @@ void displayAllTasks(TASK tasks[], int taskCount) {
     }
 }
 
-void LaunchProperAction(int userInput)
+void LaunchProperAction(int userInput, TASK tasks[], int* ptTaskCount)
 {
     switch (userInput)
     {
@@ -88,15 +89,19 @@ void LaunchProperAction(int userInput)
         break;
     case 4:
         printf("\nList Task by Id");
+        MenuCall_ListSingleTask(tasks, *ptTaskCount);
         break;
     case 5:
         printf("\nList Task by Id range");
+        MenuCall_ListRangeTask(tasks, *ptTaskCount);
         break;
     case 6:
         printf("\nList all unfinished task");
+        MenuCall_ListAllPendingTasks(tasks, *ptTaskCount);
         break;
     case 7:
         printf("\nList all finished task");
+        MenuCall_ListAllFinishedTasks(tasks, *ptTaskCount);
         break;
     case 8:
         printf("\nSave tasklist");
@@ -128,11 +133,74 @@ void CheckJasonCode(TASK tasks[], int taskCount)
 void ObtainUserInput(int* ptUserInput)
 {
     int UserInputStatus = scanf("%d", ptUserInput);
-    if (UserInputStatus != 1 || getchar() != '\n') { //This means either scanf failed or there are extra input
+    if (UserInputStatus != 1 || getchar() != '\n') //Either scanf failed or there are extra input
+    { 
         printf("\nInvalid input!! Try again.\n");
-        while (getchar() != '\n') {}; // Blank loop eating up any extra characters in the input buffer
+        while (getchar() != '\n'); // Blank loop eating up any extra characters in the input buffer
         *ptUserInput = 0; //Set Invalid code 
-        return;
     }
 }
 
+void MenuCall_ListSingleTask(TASK tasks[], int taskCount)
+{
+    int taskId;
+    //Obtain task id to seek
+    printf("\nEnter Task Id: ");
+    ObtainUserInput(&taskId)
+   ;
+    displaySingleTask(tasks, taskCount, taskId);
+
+    //Wait for enter to return to Main Menu
+    printf("\n\nPress Enter to continue...");
+    char c = getchar();
+}
+void MenuCall_ListRangeTask(TASK tasks[], int taskCount)
+{
+    int taskId_start;
+    int taskId_end;
+
+    //Obtain starting task Id
+    printf("\nEnter Starting Task Id: ");
+    ObtainUserInput(&taskId_start);
+
+    //Obtain ending task id
+    printf("\nEnter Ending Task Id: ");
+    ObtainUserInput(&taskId_end);
+
+    //call display function
+    displayTaskRange(tasks, taskCount, taskId_start, taskId_end);
+    
+    //Wait for enter to return to Main Menu
+    printf("\n\nPress Enter to continue...");
+    char c = getchar();
+}
+void MenuCall_ListAllFinishedTasks(TASK tasks[], int taskCount)
+{
+    for (int i = 0; i < taskCount; i++) {
+        if (tasks[i].completed == 1) 
+        {
+            printf("\n%d. %s.(%s)",
+                tasks[i].id, tasks[i].description,
+                tasks[i].completed ? "Done" : "Pendings");
+        }
+    }
+
+    //Wait for enter to return to Main Menu
+    printf("\n\nPress Enter to continue...");
+    char c = getchar();
+}
+void MenuCall_ListAllPendingTasks(TASK tasks[], int taskCount)
+{
+    for (int i = 0; i < taskCount; i++) {
+        if (tasks[i].completed == 0)
+        {
+            printf("\n%d. %s.(%s)",
+                tasks[i].id, tasks[i].description,
+                tasks[i].completed ? "Done" : "Pendings");
+        }
+    }
+
+    //Wait for enter to return to Main Menu
+    printf("\n\nPress Enter to continue...");
+    char c = getchar();
+}
