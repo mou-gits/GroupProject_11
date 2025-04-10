@@ -1,0 +1,8 @@
+7
+<1><Complete assignment><0>
+<2><Buy groceries><0>
+<3><Prepare recipe><1>
+<4><Take the bus to school><0>
+<5><Email Tricia><1>
+<6><Finish C Project><0>
+<7><Eat healthy lunch><1>
