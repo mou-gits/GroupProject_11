@@ -23,4 +23,8 @@ void MenuCall_ListSingleTask(TASK tasks[], int taskCount);
 void MenuCall_ListRangeTask(TASK tasks[], int taskCount);
 void MenuCall_ListAllFinishedTasks(TASK tasks[], int taskCount);
 void MenuCall_ListAllPendingTasks(TASK tasks[], int taskCount);
-
+void MenuCall_UpdateTask(TASK tasks[], int taskCount);
+void MenuCall_AddTask(TASK tasks[], int* ptTaskCount);
+bool isProperId(TASK tasks[], int taskCount, int newtaskId);
+bool isOKtoDelete(TASK tasks[], int taskCount, int newtaskId);
+void  MenuCall_DeleteTask(tasks, ptTaskCount);

@@ -5,7 +5,7 @@
 
 void main(void)
 {
-    TASK tasks[MAX_TASKS] = 
+    TASK listofTasks[MAX_TASKS] = 
     {
         {1, "Complete assignment", 0},
         {2, "Buy groceries", 0},
@@ -17,6 +17,7 @@ void main(void)
     };
     int taskCount = 7;
     int MainMenuUserInput = 0;
+
 
     do {
         //Display the Main Menu
@@ -32,15 +33,15 @@ void main(void)
         }
 
         //UserInput = 10 -> Exit Menu
-        if (MainMenuUserInput == 10)
+        if (MainMenuUserInput == 11)
         {
             break;
         }
         
         //If proper entry
-        LaunchProperAction(MainMenuUserInput, tasks, &taskCount);
+        LaunchProperAction(MainMenuUserInput, listofTasks, &taskCount);
 
     } while (true); //Keep looping until Exit is chosen
 
-    CheckJasonCode(tasks,taskCount);
+   // CheckJasonCode(listofTasks,taskCount);
 }

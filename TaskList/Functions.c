@@ -1,21 +1,23 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 #include "Functions.h"
 
 void DisplayMainMenu(void)
 {
     printf("\n---------------     Main Menu        ---------------");
-    printf("\n 1. Add task");
-    printf("\n 2. Delete task");
-    printf("\n 3. Update existing task");
-    printf("\n 4. List task by id");
-    printf("\n 5. List task by id range");
-    printf("\n 6. List all unfinished task");
-    printf("\n 7. List all finished task");
-    printf("\n 8. Save task list");
-    printf("\n 9. Load task list");
-    printf("\n10. Exit");
+    printf("\n 1. Display the task list");
+    printf("\n 2. Add task");
+    printf("\n 3. Delete task");
+    printf("\n 4. Update existing task");
+    printf("\n 5. List task by id");
+    printf("\n 6. List task by id range");
+    printf("\n 7. List all unfinished task");
+    printf("\n 8. List all finished task");
+    printf("\n 9. Save task list");
+    printf("\n10. Load task list");
+    printf("\n11. Exit");
     printf("\n-----------------------------------------------------");
     printf("\nEnter Menu Option: ");
 }
@@ -33,6 +35,34 @@ void updateTask(TASK tasks[], int taskCount, int taskId, const char* newDescript
         }
     }
     printf("Task %d not found.\n", taskId);
+}
+
+void AddTask(TASK tasks[], int taskCount, int newtaskId, const char* newDescription, int newStatus)
+{
+    tasks[taskCount].id = newtaskId;
+
+    strncpy(tasks[taskCount].description, newDescription, DESC_SIZE - 1);
+    tasks[taskCount].description[DESC_SIZE - 1] = '\0';
+    tasks[taskCount].completed = newStatus;
+    printf("\nTask %d added.", newtaskId);
+
+}
+
+void DeleteTask(TASK tasks[], int* ptTaskCount, int IndextoDelete)
+{
+    if (IndextoDelete >= *ptTaskCount && IndextoDelete < 0)
+    {
+        printf("\nInvalid index to delete!!");
+    }
+    else
+    {
+        for (int i = IndextoDelete; i < *ptTaskCount; i++)
+        {
+            tasks[i] = tasks[i + 1];
+        }
+        *ptTaskCount = *ptTaskCount - 1;
+        printf("\nDeleted successfully!! \n");
+    }
 }
 
 void displaySingleTask(TASK tasks[], int taskCount, int taskId) {
@@ -63,15 +93,19 @@ void displayTaskRange(TASK tasks[], int taskCount, int startId, int endId) {
 }
 
 void displayAllTasks(TASK tasks[], int taskCount) {
-    if (taskCount == 0) {
+    if (taskCount == 0) 
+    {
         printf("No tasks to display.\n");
-        return;
     }
-    for (int i = 0; i < taskCount; i++) {
-        printf("\n%d. %s.(%s)",
-            tasks[i].id, tasks[i].description,
-            tasks[i].completed ? "Done" : "Pendings");
-    }
+    else 
+    {
+        for (int i = 0; i < taskCount; i++) 
+        {
+            printf("\n%d. %s.(%s)"  , tasks[i].id
+                                    , tasks[i].description
+                                    , tasks[i].completed ? "Done" : "Pendings");
+        }
+    }   
 }
 
 void LaunchProperAction(int userInput, TASK tasks[], int* ptTaskCount)
@@ -79,37 +113,43 @@ void LaunchProperAction(int userInput, TASK tasks[], int* ptTaskCount)
     switch (userInput)
     {
     case 1:
-        printf("\nAdding Tasks");
+        printf("\nHere is the whole task list:\n");
+        displayAllTasks(tasks, *ptTaskCount);
+        printf("\n\nPress Enter(<-') to go back to main menu.");
+        char c = getchar();
         break;
     case 2:
-        printf("\nDeleting Tasks");
+        MenuCall_AddTask(tasks, ptTaskCount);
         break;
     case 3:
-        printf("\nUpdating Tasks");
+        MenuCall_DeleteTask(tasks, ptTaskCount);
         break;
     case 4:
+        MenuCall_UpdateTask(tasks, *ptTaskCount);
+        break;
+    case 5:
         printf("\nList Task by Id");
         MenuCall_ListSingleTask(tasks, *ptTaskCount);
         break;
-    case 5:
+    case 6:
         printf("\nList Task by Id range");
         MenuCall_ListRangeTask(tasks, *ptTaskCount);
         break;
-    case 6:
+    case 7:
         printf("\nList all unfinished task");
         MenuCall_ListAllPendingTasks(tasks, *ptTaskCount);
         break;
-    case 7:
+    case 8:
         printf("\nList all finished task");
         MenuCall_ListAllFinishedTasks(tasks, *ptTaskCount);
         break;
-    case 8:
+    case 9:
         printf("\nSave tasklist");
         break;
-    case 9:
+    case 10:
         printf("\nLoad tasklist");
         break;
-    default:
+        default:
         break;
     }
 }
@@ -146,8 +186,8 @@ void MenuCall_ListSingleTask(TASK tasks[], int taskCount)
     int taskId;
     //Obtain task id to seek
     printf("\nEnter Task Id: ");
-    ObtainUserInput(&taskId)
-   ;
+    ObtainUserInput(&taskId);
+ 
     displaySingleTask(tasks, taskCount, taskId);
 
     //Wait for enter to return to Main Menu
@@ -203,4 +243,142 @@ void MenuCall_ListAllPendingTasks(TASK tasks[], int taskCount)
     //Wait for enter to return to Main Menu
     printf("\n\nPress Enter to continue...");
     char c = getchar();
+}
+void MenuCall_UpdateTask(TASK tasks[], int taskCount)
+{
+    //Declaring local variables
+    int taskId, newStatus;
+    char newDescription[DESC_SIZE], choice;
+
+    //Displaying all available tasks
+    printf("\nList of avaliable tasks: ");
+    displayAllTasks(tasks, taskCount);
+
+    //Obtaining which task to edit
+    printf("\nPlease enter the Id to update: ");
+    ObtainUserInput(&taskId);
+    
+    printf("\nDo you want to change the description? (Y/N) ");
+    int val = scanf("%c", &choice);
+    while (getchar() != '\n');
+
+    if (choice=='Y'|| choice =='y')
+    {
+        printf("\nPlease enter the description: ");
+        fgets(newDescription, DESC_SIZE, stdin);
+        newDescription[strcspn(newDescription, "\n")] = '\0';
+    }
+        
+    printf("\nPlease define the status (1/0): ");
+    ObtainUserInput(&newStatus);
+
+    if (choice=='Y'|| choice =='y')
+    {
+        updateTask(tasks, taskCount, taskId, newDescription, newStatus);
+    }
+    else {
+        updateTask(tasks, taskCount, taskId, NULL, newStatus);
+    }
+    //Wait for enter to return to Main Menu
+    printf("\nPress Enter to go back to main menu...");
+    char c = getchar();
+}
+void MenuCall_AddTask(TASK tasks[], int* ptTaskCount)
+{
+    //Obtain task details from user
+        //define variables
+    int newtaskId, newStatus;
+    char newDescription[DESC_SIZE];
+
+    do {
+        printf("\nPlease provide the task ID to add: ");
+        ObtainUserInput(&newtaskId);
+    } while (!isProperId(tasks, *ptTaskCount, newtaskId));
+
+        //put a printf to take the details to add to the task list
+    printf("\nPlease provide the description: ");
+    fgets(newDescription, DESC_SIZE, stdin);
+    newDescription[strcspn(newDescription, "\n")] = '\0';
+    
+    do {
+        printf("\nPlease define the status (1/0): ");
+        ObtainUserInput(&newStatus);
+        
+    }while(newStatus!=0 && newStatus!=1);
+    
+    //Add task information for New member in the tasks array 
+    AddTask(tasks, *ptTaskCount, newtaskId, newDescription, newStatus);
+    *ptTaskCount = *ptTaskCount + 1;
+
+}
+void MenuCall_DeleteTask(TASK tasks[], int* ptTaskCount)
+{
+    //Declaring local variables
+    int taskId, newStatus;
+    int IndextoDelete;
+    char newDescription[DESC_SIZE], choice;
+
+    //Displaying all available tasks
+    printf("\nList of avaliable tasks: ");
+    displayAllTasks(tasks, *ptTaskCount);
+
+    do {
+        printf("\nPlease provide the task ID to delete: ");
+        ObtainUserInput(&taskId);
+    } while (!isOKtoDelete(tasks, *ptTaskCount, taskId));
+    
+    //find the location of that taskid
+    for (IndextoDelete = 0; IndextoDelete < *ptTaskCount; IndextoDelete++)
+    {
+        if (taskId==tasks[IndextoDelete].id)
+        {
+            break;
+        }
+    }
+    //call the del func
+    DeleteTask(tasks, ptTaskCount, IndextoDelete);
+
+    printf("\nPress Enter to go back to main menu...");
+    char c = getchar();
+
+}
+bool isProperId(TASK tasks[], int taskCount, int newtaskId)
+{
+    if (newtaskId <= 0)
+    {
+        printf("\nNeed a positive integer. Please try again!");
+        return false;
+    }
+    else
+    {
+        for (int i = 0; i < taskCount; i++)
+        {
+            if (tasks[i].id == newtaskId)
+            {
+                printf("\nTask Id is already exists! Please try again!");
+                return false;
+            }
+        }
+        return true;
+    }
+}
+bool isOKtoDelete(TASK tasks[], int taskCount, int newtaskId)
+{
+    if (newtaskId <= 0)
+    {
+        printf("\nNeed a positive integer to delete. Please try again!");
+        return false;
+    }
+    else
+    {
+        for (int i = 0; i < taskCount; i++)
+        {
+            if (tasks[i].id == newtaskId)
+            {
+                return true;
+            }
+        }
+        printf("\nTask Id does not exist! Please try again!");
+        return false;
+    }
 }
