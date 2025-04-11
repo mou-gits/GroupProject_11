@@ -4,7 +4,7 @@
 #define DESC_SIZE 256
 #define FILENAME "Tasklist.txt"
 
-typedef struct taskitem {
+typedef struct task {
     int id;
     char description[DESC_SIZE];
     int completed; // 0 = not completed, 1 = completed
@@ -18,9 +18,6 @@ void displayTaskRange(TASK tasks[], int taskCount, int startId, int endId);
 
 void displayAllTasks(TASK tasks[], int taskCount);
 
-void DisplayMainMenu(void);
-
-void LaunchProperAction(int userInput, TASK tasks[], int* ptTaskCount);
 
 void ObtainUserInput(int* ptUserInput);
 

@@ -7,6 +7,7 @@
 
 
 void updateTask(TASK tasks[], int taskCount, int taskId, const char* newDescription, int newStatus) {
+
     for (int i = 0; i < taskCount; i++) {
         if (tasks[i].id == taskId) {
             if (newDescription != NULL) {
@@ -399,7 +400,15 @@ void SearchTask(TASK task[], int taskCount, int taskId) {
         // If found it will print the task and if it is completed or not.
         if (task[i].id == taskId) {
             printf("\nTask Found:\n");
-            printf("Task: TASK ID:%d %s %d\n", task[i].id, task[i].description, task[i].completed);
+            printf("Task: TASK ID:%d %s ", task[i].id, task[i].description);
+
+            if (task[i].completed == 1) {
+                printf("Finished\n");
+            }
+            else {
+                printf("Pending\n");
+            }
+
             return EXIT_SUCCESS;
         }
     }
