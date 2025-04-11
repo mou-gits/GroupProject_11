@@ -9,11 +9,18 @@
 void updateTask(TASK tasks[], int taskCount, int taskId, const char* newDescription, int newStatus) {
 
     for (int i = 0; i < taskCount; i++) {
+        // This will look look for the task id the user inputed
+        // 
         if (tasks[i].id == taskId) {
+            // Then it will check if the user changed anything
+            // If they didn't it will skip this part 
             if (newDescription != NULL) {
+                // When the user inputted something it copies it
+                // into the task and decreases the desc size to prevent buffer overflow.
                 strncpy(tasks[i].description, newDescription, DESC_SIZE - 1);
                 tasks[i].description[DESC_SIZE - 1] = '\0';
             }
+            // Then finally updated the task
             tasks[i].completed = newStatus;
             printf("\nTask %d updated.", taskId);
             return;
@@ -33,65 +40,85 @@ void AddTask(TASK tasks[], int taskCount, int newtaskId, const char* newDescript
 
 }
 
-void DeleteTask(TASK tasks[], int* ptTaskCount, int IndextoDelete)
-{
-    if (IndextoDelete >= *ptTaskCount && IndextoDelete < 0)
-    {
-        printf("\nInvalid index to delete!!");
-    }
-    else
-    {
-        for (int i = IndextoDelete; i < *ptTaskCount; i++)
-        {
-            tasks[i] = tasks[i + 1];
-        }
-        *ptTaskCount = *ptTaskCount - 1;
-        printf("\nDeleted successfully!! \n");
-    }
-}
-
+// Function to display a single task based on the given task ID
 void displaySingleTask(TASK tasks[], int taskCount, int taskId) {
+
+    // Loop through all tasks
     for (int i = 0; i < taskCount; i++) {
+        // If current task's ID matches the given taskId
         if (tasks[i].id == taskId) {
-            printf("\n%d. %s.(%s)",
-                tasks[i].id, tasks[i].description,
-                tasks[i].completed ? "Done" : "Pendings");
+            // Display the task's ID and description
+            printf("\n%d. %s.", tasks[i].id, tasks[i].description);
+
+            // Check if the task is completed and print status
+            if (tasks[i].completed) {
+                printf("(Done)");
+            }
+            else {
+                printf("(Pendings)");
+            }
+
+            // Exit function after finding and displaying the task
             return;
         }
     }
+
+    // If no matching task ID is found, print an error message
     printf("Task ID %d not found.\n", taskId);
 }
 
+// Function to display all tasks with IDs between startId and endId
 void displayTaskRange(TASK tasks[], int taskCount, int startId, int endId) {
-    int found = 0;
+    int found = 0; // Flag to check if any task was found in the range
+
+    // Loop through all tasks
     for (int i = 0; i < taskCount; i++) {
+        // Check if the task ID is within the specified range
         if (tasks[i].id >= startId && tasks[i].id <= endId) {
-            printf("\n%d. %s.(%s)",
-                tasks[i].id, tasks[i].description,
-                tasks[i].completed ? "Done" : "Pendings");
-            found = 1;
+            // Display the task's ID and description
+            printf("\n%d. %s.", tasks[i].id, tasks[i].description);
+
+            // Check and print task status
+            if (tasks[i].completed) {
+                printf("(Done)");
+            }
+            else {
+                printf("(Pendings)");
+            }
+
+            found = 1; // Mark that a task was found
         }
     }
+
+    // If no tasks found in the specified range
     if (!found) {
         printf("No tasks found in range %d - %d.\n", startId, endId);
     }
 }
 
+// Function to display all tasks in the list
 void displayAllTasks(TASK tasks[], int taskCount) {
-    if (taskCount == 0) 
-    {
-        printf("No tasks to display.\n");
+    // Check if the task list is empty
+    if (taskCount == 0) {
+        printf("No tasks to display.\n"); // Print message if no tasks
     }
-    else 
-    {
-        printf("\nHere is the whole task list:\n");
-        for (int i = 0; i < taskCount; i++) 
-        {
-            printf("\n%d. %s.(%s)"  , tasks[i].id
-                                    , tasks[i].description
-                                    , tasks[i].completed ? "Done" : "Pendings");
+    else {
+        printf("\nHere is the whole task list:\n"); // Header for the task list
+
+        // Loop through all tasks
+        for (int i = 0; i < taskCount; i++) {
+            // Display the task's ID and description
+            printf("\n%d. %s.", tasks[i].id, tasks[i].description);
+
+            // Print the task status (Done or Pendings)
+            if (tasks[i].completed) {
+                printf("(Done)");
+            }
+            else {
+                printf("(Pendings)");
+            }
         }
-    }   
+    }
 }
 
 
@@ -403,7 +430,7 @@ void SearchTask(TASK task[], int taskCount, int taskId) {
             printf("Task: TASK ID:%d %s ", task[i].id, task[i].description);
 
             if (task[i].completed == 1) {
-                printf("Finished\n");
+                printf("Done\n");
             }
             else {
                 printf("Pending\n");
