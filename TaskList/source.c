@@ -16,17 +16,6 @@ void main(void)
         //Obtain user input for main menu options
         ObtainUserInput(&MainMenuUserInput);
 
-        //UserInput = 0 -> invalid entry
-        if (MainMenuUserInput == 0)
-        {
-            continue;
-        }
-
-        //UserInput = 10 -> Exit Menu
-        if (MainMenuUserInput == 11)
-        {
-            break;
-        }
         
         //If proper entry
         LaunchProperAction(MainMenuUserInput, listofTasks, &taskCount);

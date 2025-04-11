@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include "Functions.h"
@@ -17,7 +18,8 @@ void DisplayMainMenu(void)
     printf("\n 8. List all finished task");
     printf("\n 9. Save task list");
     printf("\n10. Load task list");
-    printf("\n11. Exit");
+    printf("\n11. Search task");
+    printf("\n12. Exit");
     printf("\n-----------------------------------------------------");
     printf("\nEnter Menu Option: ");
 }
@@ -151,7 +153,14 @@ void LaunchProperAction(int userInput, TASK tasks[], int* ptTaskCount)
         printf("\nLoad tasklist");
         ReadTasksFromFile(tasks, ptTaskCount, "Tasklist.txt");
         break;
+    case 11: 
+        printf("Enter Task ID to search: ");
+        int input;
+        ObtainUserInput(&input);
+        SearchTask(tasks, *ptTaskCount, input);
+        break;
     default:
+        printf("Invalid choice please enter a number between 1-10");
         break;
     }
 }
@@ -435,4 +444,24 @@ void ReadTasksFromFile(TASK listofTasks[], int* TaskCount, const char* filename)
         fclose(file);
         printf("Data successfully loaded from %s.\n", filename);
     }
+}
+
+void SearchTask(TASK task[], int taskCount, int taskId) {
+
+    // Use a for loop to interrate the task
+    for (int i = 0; i < taskCount; i++) {
+
+        // This will look for the task Id that the user inputted. 
+        // If found it will print the task and if it is completed or not.
+        if (task[i].id == taskId) {
+            printf("\nTask Found:\n");
+            printf("Task: %d %s %d\n", task[i].id, task[i].description, task[i].completed);
+            return EXIT_SUCCESS;
+        }
+    }
+
+    // Will tell the user that their is no task with the task id they 
+    // Inputted
+    printf("No task found with ID %d.\n", taskId);
+
 }

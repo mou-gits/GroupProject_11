@@ -44,3 +44,5 @@ void  MenuCall_DeleteTask(tasks, ptTaskCount);
 void SaveDataToDrive(TASK tasks[], int taskCount, const char* filename);
 
 void ReadTasksFromFile(TASK listofTasks[], int* TaskCount, const char* filename);
+
+void SearchTask(TASK task[], int taskCount, int taskId);
