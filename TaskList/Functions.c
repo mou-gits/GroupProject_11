@@ -5,7 +5,6 @@
 #include <stdbool.h>
 #include "Functions.h"
 
-
 void updateTask(TASK tasks[], int taskCount, int taskId, const char* newDescription, int newStatus) {
 
     for (int i = 0; i < taskCount; i++) {
@@ -29,18 +28,19 @@ void updateTask(TASK tasks[], int taskCount, int taskId, const char* newDescript
     printf("Task %d not found.\n", taskId);
 }
 
-void AddTask(TASK tasks[], int taskCount, int newtaskId, const char* newDescription, int newStatus)
+void AddTask(TASK tasks[], int* taskCount, int newtaskId, const char* newDescription, int newStatus)
 {
     //This function adds a new task 
     //Sets the id, description, and status
-
-    if (isIDAbsent(tasks, taskCount, newtaskId))
+    if (isIDAbsent(tasks, taskCount, newtaskId,true))
     {
-        tasks[taskCount].id = newtaskId;
-        tasks[taskCount].completed = newStatus;
+        tasks[*taskCount].id = newtaskId;
+        tasks[*taskCount].completed = newStatus;
 
-        strncpy(tasks[taskCount].description, newDescription, DESC_SIZE - 1);
-        tasks[taskCount].description[DESC_SIZE - 1] = '\0';
+        strncpy(tasks[*taskCount].description, newDescription, DESC_SIZE - 1);
+        tasks[*taskCount].description[DESC_SIZE - 1] = '\0';
+
+        *taskCount = *taskCount + 1;
 
         printf("\nTask %d added.", newtaskId);
     }    
@@ -128,59 +128,6 @@ void displayAllTasks(TASK tasks[], int taskCount) {
                 printf("(Pendings)");
             }
         }
-    }
-}
-
-void LaunchProperAction(int userInput, TASK tasks[], int* ptTaskCount)
-{
-    switch (userInput)
-    {
-    case 1:
-        
-        displayAllTasks(tasks, *ptTaskCount);
-        printf("\n\nPress Enter(<-') to go back to main menu.");
-        char c = getchar();
-        break;
-    case 2:
-        MenuCall_AddTask(tasks, ptTaskCount);
-        break;
-    case 3:
-        MenuCall_DeleteTask(tasks, ptTaskCount);
-        break;
-    case 4:
-        MenuCall_UpdateTask(tasks, *ptTaskCount);
-        break;
-    case 5:
-        printf("\nList Task by Id");
-        MenuCall_ListSingleTask(tasks, *ptTaskCount);
-        break;
-    case 6:
-        printf("\nList Task by Id range");
-        MenuCall_ListRangeTask(tasks, *ptTaskCount);
-        break;
-    case 7:
-        printf("\nList all unfinished task");
-        MenuCall_ListAllPendingTasks(tasks, *ptTaskCount);
-        break;
-    case 8:
-        printf("\nList all finished task");
-        MenuCall_ListAllFinishedTasks(tasks, *ptTaskCount);
-        break;
-    case 9:
-        SaveDataToDrive(tasks, *ptTaskCount, FILENAME);
-        break;
-    case 10:
-        ReadTasksFromFile(tasks, ptTaskCount, FILENAME);
-        break;
-    case 11: 
-        printf("Enter Task ID to search: ");
-        int input;
-        ObtainUserInput(&input);
-        SearchTask(tasks, *ptTaskCount, input);
-        break;
-    default:
-        printf("Invalid choice please enter a number between 1-10");
-        break;
     }
 }
 
@@ -281,7 +228,7 @@ void MenuCall_UpdateTask(TASK tasks[], int taskCount)
     {
         printf("\nPlease enter the Id to update: ");
         ObtainUserInput(&taskId);
-    } while (isIDPresent(tasks, taskCount, taskId) == false);
+    } while (isIDPresent(tasks, taskCount, taskId,true) == false);
     
         printf("\nDo you want to change the description? (Y/N) ");
         int val = scanf("%c", &choice);
@@ -320,7 +267,7 @@ void MenuCall_AddTask(TASK tasks[], int* ptTaskCount)
     do {
         printf("\nPlease provide the task ID to add: ");
         ObtainUserInput(&newtaskId);
-    } while (!isIDAbsent(tasks, *ptTaskCount, newtaskId));
+    } while (!isIDAbsent(tasks, *ptTaskCount, newtaskId,true));
 
         //put a printf to take the details to add to the task list
     printf("\nPlease provide the description: ");
@@ -334,9 +281,7 @@ void MenuCall_AddTask(TASK tasks[], int* ptTaskCount)
     }while(newStatus!=0 && newStatus!=1);
     
     //Add task information for New member in the tasks array 
-    AddTask(tasks, *ptTaskCount, newtaskId, newDescription, newStatus);
-    *ptTaskCount = *ptTaskCount + 1;
-
+    AddTask(tasks, ptTaskCount, newtaskId, newDescription, newStatus);
 }
 
 void MenuCall_DeleteTask(TASK tasks[], int* ptTaskCount)
@@ -355,7 +300,7 @@ void MenuCall_DeleteTask(TASK tasks[], int* ptTaskCount)
     do {
         printf("\nPlease provide the task ID to delete: ");
         ObtainUserInput(&taskId);
-    } while (!isIDPresent(tasks, *ptTaskCount, taskId));
+    } while (!isIDPresent(tasks, *ptTaskCount, taskId,true));
     
     //find the location of that taskid
     for (IndextoDelete = 0; IndextoDelete < *ptTaskCount; IndextoDelete++)
@@ -373,11 +318,14 @@ void MenuCall_DeleteTask(TASK tasks[], int* ptTaskCount)
 
 }
 
-bool isIDAbsent(TASK tasks[], int taskCount, int newtaskId)
+bool isIDAbsent(TASK tasks[], int taskCount, int newtaskId, bool verbose)
 {
     if (newtaskId <= 0)
     {
-        printf("\nNeed a positive integer. Please try again!");
+        if (verbose)
+        {
+            printf("\nNeed a positive integer. Please try again!");
+        }
         return false;
     }
     else
@@ -386,7 +334,10 @@ bool isIDAbsent(TASK tasks[], int taskCount, int newtaskId)
         {
             if (tasks[i].id == newtaskId)
             {
-                printf("\nTask Id is already exists! Please try again!");
+                if (verbose)
+                {
+                    printf("\nTask Id %d exists! Please try again!", newtaskId);
+                }
                 return false;
             }
         }
@@ -394,11 +345,14 @@ bool isIDAbsent(TASK tasks[], int taskCount, int newtaskId)
     }
 }
 
-bool isIDPresent(TASK tasks[], int taskCount, int newtaskId)
+bool isIDPresent(TASK tasks[], int taskCount, int newtaskId, bool verbose)
 {
     if (newtaskId <= 0)
     {
-        printf("\nNeed a positive integer. Please try again!");
+        if (verbose)
+        {
+            printf("\nNeed a positive integer. Please try again!");
+        }
         return false;
     }
     else
@@ -410,7 +364,10 @@ bool isIDPresent(TASK tasks[], int taskCount, int newtaskId)
                 return true;
             }
         }
-        printf("\nTask Id does not exist! Please try again!");
+        if (verbose) 
+        {
+            printf("\nTask Id does not exist! Please try again!");
+        }
         return false;
     }
 }
@@ -468,25 +425,30 @@ void ReadTasksFromFile(TASK listofTasks[], int* TaskCount, const char* filename)
             //parse the string obtained by reading each line
             val = sscanf(buffer, "<%d><%256[^><]><%d>", &taskId, strDescription, &taskStatus);
 
-            // If the last position is not '\0', explicitly null-terminate
-            if (strDescription[sizeof(strDescription) - 1] != '\0') 
+            if (isIDAbsent(listofTasks, *TaskCount, taskId,false))
             {
-                strDescription[sizeof(strDescription) - 1] = '\0';
+                // If the last position is not '\0', explicitly null-terminate
+                if (strDescription[sizeof(strDescription) - 1] != '\0')
+                {
+                    strDescription[sizeof(strDescription) - 1] = '\0';
+                }
+                //Add the values read from file into the array structure
+                AddTask(listofTasks, TaskCount, taskId, strDescription, taskStatus);
             }
-
-            //Add the values read from file into the array structure
-            AddTask(listofTasks, *TaskCount, taskId, strDescription, taskStatus);
-            *TaskCount = *TaskCount + 1;
+            else 
+            {
+                printf("\nTask ID: %d from imported file exists. Skipping to next entry",taskId);
+            }
         }
 
         //close the file when done
         fclose(file);
-        printf("Data successfully loaded from %s.\n", filename);
+        printf("\nData successfully loaded from %s.\n", filename);
     }
 }
 
-void SearchTask(TASK task[], int taskCount, int taskId) {
-
+void SearchTask(TASK task[], int taskCount, int taskId) 
+{
     // Use a for loop to interrate the task
     for (int i = 0; i < taskCount; i++) {
 
@@ -494,8 +456,9 @@ void SearchTask(TASK task[], int taskCount, int taskId) {
         // If found it will print the task and if it is completed or not.
         if (task[i].id == taskId) {
             printf("\nTask Found:\n");
-            printf("Task: %d %s %d\n", task[i].id, task[i].description, task[i].completed);
-            return EXIT_SUCCESS;
+            printf("Task: %d %s (%s)\n", task[i].id
+                                     , task[i].description
+                                     , task[i].completed ? "Done" : "Pending");
         }
     }
 }

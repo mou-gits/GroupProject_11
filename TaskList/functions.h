@@ -10,7 +10,7 @@ typedef struct task {
     int completed; // 0 = not completed, 1 = completed
 } TASK;
 
-void updateTask(TASK tasks[], int taskCount, int taskId, const char* newDescription, int newStatus);
+//void updateTask(TASK tasks[], int taskCount, int taskId, const char* newDescription, int newStatus);
 
 void displaySingleTask(TASK tasks[], int taskCount, int taskId);
 
@@ -33,12 +33,14 @@ void MenuCall_UpdateTask(TASK tasks[], int taskCount);
 
 void MenuCall_AddTask(TASK tasks[], int* ptTaskCount);
 
-bool isIDAbsent(TASK tasks[], int taskCount, int newtaskId);
+bool isIDAbsent(TASK tasks[], int taskCount, int newtaskId, bool verbose);
 
-bool isIDPresent(TASK tasks[], int taskCount, int newtaskId);
+bool isIDPresent(TASK tasks[], int taskCount, int newtaskId, bool verbose);
 
 void  MenuCall_DeleteTask(tasks, ptTaskCount);
 
 void SaveDataToDrive(TASK tasks[], int taskCount, const char* filename);
 
 void ReadTasksFromFile(TASK listofTasks[], int* TaskCount, const char* filename);
+
+void SearchTask(TASK task[], int taskCount, int taskId);

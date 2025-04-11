@@ -7,8 +7,8 @@
 
 void main(void)
 {
-    TASK listofTasks[MAX_TASKS];
-    int taskCount = 0;
+    TASK listofTasks[MAX_TASKS] = { {1,"Try this",0},{2,"Do that",0} };
+    int taskCount = 2;
     int MainMenuUserInput = 0;
 
     bool running = true;
