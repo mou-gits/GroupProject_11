@@ -29,6 +29,7 @@ Implemented the following features
 - void displaySingleTask(TASK tasks[], int taskCount, int taskId);
 - void displayTaskRange(TASK tasks[], int taskCount, int startId, int endId);
 - void displayAllTasks(TASK tasks[], int taskCount);
+- void SearchTask(TASK task[], int taskCount, int taskId);
 
   **Basil Vavasis**
   
