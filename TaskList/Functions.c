@@ -5,24 +5,6 @@
 #include <stdbool.h>
 #include "Functions.h"
 
-void DisplayMainMenu(void)
-{
-    printf("\n---------------     Main Menu        ---------------");
-    printf("\n 1. Display the task list");
-    printf("\n 2. Add task");
-    printf("\n 3. Delete task");
-    printf("\n 4. Update existing task");
-    printf("\n 5. List task by id");
-    printf("\n 6. List task by id range");
-    printf("\n 7. List all unfinished task");
-    printf("\n 8. List all finished task");
-    printf("\n 9. Save task list");
-    printf("\n10. Load task list");
-    printf("\n11. Search task");
-    printf("\n12. Exit");
-    printf("\n-----------------------------------------------------");
-    printf("\nEnter Menu Option: ");
-}
 
 void updateTask(TASK tasks[], int taskCount, int taskId, const char* newDescription, int newStatus) {
     for (int i = 0; i < taskCount; i++) {
@@ -111,58 +93,7 @@ void displayAllTasks(TASK tasks[], int taskCount) {
     }   
 }
 
-void LaunchProperAction(int userInput, TASK tasks[], int* ptTaskCount)
-{
-    switch (userInput)
-    {
-    case 1:
-        
-        displayAllTasks(tasks, *ptTaskCount);
-        printf("\n\nPress Enter(<-') to go back to main menu.");
-        char c = getchar();
-        break;
-    case 2:
-        MenuCall_AddTask(tasks, ptTaskCount);
-        break;
-    case 3:
-        MenuCall_DeleteTask(tasks, ptTaskCount);
-        break;
-    case 4:
-        MenuCall_UpdateTask(tasks, *ptTaskCount);
-        break;
-    case 5:
-        printf("\nList Task by Id");
-        MenuCall_ListSingleTask(tasks, *ptTaskCount);
-        break;
-    case 6:
-        printf("\nList Task by Id range");
-        MenuCall_ListRangeTask(tasks, *ptTaskCount);
-        break;
-    case 7:
-        printf("\nList all unfinished task");
-        MenuCall_ListAllPendingTasks(tasks, *ptTaskCount);
-        break;
-    case 8:
-        printf("\nList all finished task");
-        MenuCall_ListAllFinishedTasks(tasks, *ptTaskCount);
-        break;
-    case 9:
-        SaveDataToDrive(tasks, *ptTaskCount, FILENAME);
-        break;
-    case 10:
-        ReadTasksFromFile(tasks, ptTaskCount, FILENAME);
-        break;
-    case 11: 
-        printf("Enter Task ID to search: ");
-        int input;
-        ObtainUserInput(&input);
-        SearchTask(tasks, *ptTaskCount, input);
-        break;
-    default:
-        printf("Invalid choice please enter a number between 1-10");
-        break;
-    }
-}
+
 
 void ObtainUserInput(int* ptUserInput)
 {
@@ -468,7 +399,7 @@ void SearchTask(TASK task[], int taskCount, int taskId) {
         // If found it will print the task and if it is completed or not.
         if (task[i].id == taskId) {
             printf("\nTask Found:\n");
-            printf("Task: %d %s %d\n", task[i].id, task[i].description, task[i].completed);
+            printf("Task: TASK ID:%d %s %d\n", task[i].id, task[i].description, task[i].completed);
             return EXIT_SUCCESS;
         }
     }
