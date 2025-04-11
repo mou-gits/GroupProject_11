@@ -101,6 +101,7 @@ void displayAllTasks(TASK tasks[], int taskCount) {
     }
     else 
     {
+        printf("\nHere is the whole task list:\n");
         for (int i = 0; i < taskCount; i++) 
         {
             printf("\n%d. %s.(%s)"  , tasks[i].id
@@ -115,7 +116,7 @@ void LaunchProperAction(int userInput, TASK tasks[], int* ptTaskCount)
     switch (userInput)
     {
     case 1:
-        printf("\nHere is the whole task list:\n");
+        
         displayAllTasks(tasks, *ptTaskCount);
         printf("\n\nPress Enter(<-') to go back to main menu.");
         char c = getchar();
@@ -146,12 +147,10 @@ void LaunchProperAction(int userInput, TASK tasks[], int* ptTaskCount)
         MenuCall_ListAllFinishedTasks(tasks, *ptTaskCount);
         break;
     case 9:
-        printf("\nSaving tasklist");
-        SaveDataToDrive(tasks, *ptTaskCount, "Tasklist.txt");
+        SaveDataToDrive(tasks, *ptTaskCount, FILENAME);
         break;
     case 10:
-        printf("\nLoad tasklist");
-        ReadTasksFromFile(tasks, ptTaskCount, "Tasklist.txt");
+        ReadTasksFromFile(tasks, ptTaskCount, FILENAME);
         break;
     case 11: 
         printf("Enter Task ID to search: ");
@@ -254,31 +253,35 @@ void MenuCall_UpdateTask(TASK tasks[], int taskCount)
     displayAllTasks(tasks, taskCount);
 
     //Obtaining which task to edit
-    printf("\nPlease enter the Id to update: ");
-    ObtainUserInput(&taskId);
+    do
+    {
+        printf("\nPlease enter the Id to update: ");
+        ObtainUserInput(&taskId);
+    } while (isOKtoDelete(tasks, taskCount, taskId) == false);
     
-    printf("\nDo you want to change the description? (Y/N) ");
-    int val = scanf("%c", &choice);
-    while (getchar() != '\n');
+        printf("\nDo you want to change the description? (Y/N) ");
+        int val = scanf("%c", &choice);
+        while (getchar() != '\n');
 
-    if (choice=='Y'|| choice =='y')
-    {
-        printf("\nPlease enter the description: ");
-        fgets(newDescription, DESC_SIZE, stdin);
-        newDescription[strcspn(newDescription, "\n")] = '\0';
-    }
-        
-    printf("\nPlease define the status (1/0): ");
-    ObtainUserInput(&newStatus);
+        if (choice == 'Y' || choice == 'y')
+        {
+            printf("\nPlease enter the description: ");
+            fgets(newDescription, DESC_SIZE, stdin);
+            newDescription[strcspn(newDescription, "\n")] = '\0';
+        }
 
-    if (choice=='Y'|| choice =='y')
-    {
-        updateTask(tasks, taskCount, taskId, newDescription, newStatus);
-    }
-    else {
-        updateTask(tasks, taskCount, taskId, NULL, newStatus);
-    }
-    //Wait for enter to return to Main Menu
+        printf("\nPlease define the status (1/0): ");
+        ObtainUserInput(&newStatus);
+
+        if (choice == 'Y' || choice == 'y')
+        {
+            updateTask(tasks, taskCount, taskId, newDescription, newStatus);
+        }
+        else {
+            updateTask(tasks, taskCount, taskId, NULL, newStatus);
+        }
+    
+     //Wait for enter to return to Main Menu
     printf("\nPress Enter to go back to main menu...");
     char c = getchar();
 }
@@ -369,7 +372,7 @@ bool isOKtoDelete(TASK tasks[], int taskCount, int newtaskId)
 {
     if (newtaskId <= 0)
     {
-        printf("\nNeed a positive integer to delete. Please try again!");
+        printf("\nNeed a positive integer. Please try again!");
         return false;
     }
     else
@@ -388,24 +391,32 @@ bool isOKtoDelete(TASK tasks[], int taskCount, int newtaskId)
 
 void SaveDataToDrive(TASK tasks[], int taskCount, const char* filename)
 {   
+    //opening file to write    
     FILE* file = fopen(filename, "w");
+
+    //checking the if the file opening correctly
     if (file == NULL) {
         perror("\nError opening file");
         return;
     }
 
+    //printing on the file which is opened and showing how many task we have written
     fprintf(file, "%d\n", taskCount);
 
+    //using a for loop to write the task id, task description and task status
     for (int i = 0; i < taskCount; i++) {
         fprintf(file, "<%d><%s><%d>\n", tasks[i].id, tasks[i].description, tasks[i].completed);
     }
-    fclose(file);
+    fclose(file);       //closing the file
     printf("\nData successfully saved to %s.", filename);
 }
 
 void ReadTasksFromFile(TASK listofTasks[], int* TaskCount, const char* filename)
 {
+    //opening the file to read
     FILE* file = fopen(filename, "r");
+
+    //checking if the file is opening correctly
     if (file == NULL) {
         perror("Error opening file");
     }
@@ -415,8 +426,10 @@ void ReadTasksFromFile(TASK listofTasks[], int* TaskCount, const char* filename)
         char strDescription[DESC_SIZE];
         char buffer[DESC_SIZE * 2]; // Buffer to hold each line
 
+        //showing the total number of tasks
         int val = fscanf(file, "%d\n", TaskCount);
 
+        //using a for loop to read tasks from the file
         for (int i = 0; i < *TaskCount; i++)
         {
             //Read a line until you reach \n
