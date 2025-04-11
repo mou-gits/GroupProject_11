@@ -16,10 +16,14 @@ void main(void)
         //Obtain user input for main menu options
         ObtainUserInput(&MainMenuUserInput);
 
-        
+        //exit menu
+        if (MainMenuUserInput == 12)
+        {
+            break;
+        }
+
         //If proper entry
         LaunchProperAction(MainMenuUserInput, listofTasks, &taskCount);
-
     } while (true); //Keep looping until Exit is chosen
 }
 

@@ -36,14 +36,12 @@ void MenuCall_UpdateTask(TASK tasks[], int taskCount);
 
 void MenuCall_AddTask(TASK tasks[], int* ptTaskCount);
 
-bool isProperId(TASK tasks[], int taskCount, int newtaskId);
+bool isIDAbsent(TASK tasks[], int taskCount, int newtaskId);
 
-bool isOKtoDelete(TASK tasks[], int taskCount, int newtaskId);
+bool isIDPresent(TASK tasks[], int taskCount, int newtaskId);
 
 void  MenuCall_DeleteTask(tasks, ptTaskCount);
 
 void SaveDataToDrive(TASK tasks[], int taskCount, const char* filename);
 
 void ReadTasksFromFile(TASK listofTasks[], int* TaskCount, const char* filename);
-
-void SearchTask(TASK task[], int taskCount, int taskId);
