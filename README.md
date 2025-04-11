@@ -4,10 +4,12 @@ Implemented the following features
 - Menu driven interface
 - Add() task functionality
 - Delete() task functionality
-- Update() task functionality
+- File Save functionality
+- File Load functionality
+- Frontend of the Update() task functionality
+- Frontend of the Search() task functionality
 
 **List of functions**
-
 - void DisplayMainMenu(void);
 - void LaunchProperAction(int userInput, TASK tasks[], int* ptTaskCount);
 - void ObtainUserInput(int* ptUserInput);
@@ -24,12 +26,12 @@ Implemented the following features
 **Jason S. Little**
 
 **List of functions**
-
 - void updateTask(TASK tasks[], int taskCount, int taskId, const char* newDescription, int newStatus);
 - void displaySingleTask(TASK tasks[], int taskCount, int taskId);
 - void displayTaskRange(TASK tasks[], int taskCount, int startId, int endId);
 - void displayAllTasks(TASK tasks[], int taskCount);
 - void SearchTask(TASK task[], int taskCount, int taskId);
 
-  **Basil Vavasis**
+
+**Basil Vavasis**
   
