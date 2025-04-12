@@ -52,19 +52,15 @@ void main(void)
             MenuCall_UpdateTask(listofTasks, taskCount);
             break;
         case 5:
-            printf("\nList Task by Id");
             MenuCall_ListSingleTask(listofTasks, taskCount);
             break;
         case 6:
-            printf("\nList Task by Id range");
             MenuCall_ListRangeTask(listofTasks, taskCount);
             break;
         case 7:
-            printf("\nList all unfinished task");
             MenuCall_ListAllPendingTasks(listofTasks, taskCount);
             break;
         case 8:
-            printf("\nList all finished task");
             MenuCall_ListAllFinishedTasks(listofTasks, taskCount);
             break;
         case 9:
@@ -88,7 +84,6 @@ void main(void)
             break;
         }
     }
-   
 }
 
 

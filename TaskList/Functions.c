@@ -5,12 +5,12 @@
 #include <stdbool.h>
 #include "Functions.h"
 
+//Test This function//
 //Function to update task as it is required
 void updateTask(TASK tasks[], int taskCount, int taskId, const char* newDescription, int newStatus) {
 
     for (int i = 0; i < taskCount; i++) {
-        // This will look look for the task id the user inputed
-        // 
+        // This will look for the task id the user inputed
         if (tasks[i].id == taskId) {
             // Then it will check if the user changed anything
             // If they didn't it will skip this part 
@@ -29,25 +29,28 @@ void updateTask(TASK tasks[], int taskCount, int taskId, const char* newDescript
     printf("Task %d not found.\n", taskId);
 }
 
+//Test This function//
 //Function to add task to the task list
 void AddTask(TASK tasks[], int* taskCount, int newtaskId, const char* newDescription, int newStatus)
 {
     //This function adds a new task 
     //Sets the id, description, and status
-    if (isIDAbsent(tasks, taskCount, newtaskId,true))
+    
+    if (isIDAbsent(tasks, *taskCount, newtaskId,false))
     {
         tasks[*taskCount].id = newtaskId;
         tasks[*taskCount].completed = newStatus;
 
         strncpy(tasks[*taskCount].description, newDescription, DESC_SIZE - 1);
-        tasks[*taskCount].description[DESC_SIZE - 1] = '\0';
+        tasks[*taskCount].description[DESC_SIZE - 2] = '\0';
 
         *taskCount = *taskCount + 1;
-
+        
         printf("\nTask %d added.", newtaskId);
     }    
 }
 
+//Test This function//
 //Function to delete task as it is required
 void DeleteTask(TASK tasks[], int* ptTaskCount, int IndextoDelete)
 {
@@ -118,19 +121,10 @@ void displayAllTasks(TASK tasks[], int taskCount) {
     }
     else {
         printf("\nHere is the whole task list:\n"); // Header for the task list
-
         // Loop through all tasks
         for (int i = 0; i < taskCount; i++) {
             // Display the task's ID and description
-            printf("\n%d. %s.", tasks[i].id, tasks[i].description);
-
-            // Print the task status (Done or Pendings)
-            if (tasks[i].completed) {
-                printf("(Done)");
-            }
-            else {
-                printf("(Pendings)");
-            }
+            printf("\n%d. %s (%s)", tasks[i].id, tasks[i].description, tasks[i].completed ? "Done": "Pending");
         }
     }
 }
@@ -226,21 +220,27 @@ void MenuCall_ListAllPendingTasks(TASK tasks[], int taskCount)
 //All updated task function 
 void MenuCall_UpdateTask(TASK tasks[], int taskCount)
 {
-    //Declaring local variables
-    int taskId, newStatus;
-    char newDescription[DESC_SIZE], choice;
-
-    //Displaying all available tasks
-    printf("\nList of avaliable tasks: ");
-    displayAllTasks(tasks, taskCount);
-
-    //Obtaining which task to edit by using a do-while loop
-    do
+    if (taskCount == 0)
     {
-        printf("\nPlease enter the Id to update: ");
-        ObtainUserInput(&taskId);
-    } while (isIDPresent(tasks, taskCount, taskId,true) == false);
-    
+        printf("\nNo tasks to update.");
+    }
+    else
+    {
+        //Declaring local variables
+        int taskId, newStatus;
+        char newDescription[DESC_SIZE], choice;
+
+        //Displaying all available tasks
+        printf("\nList of avaliable tasks: ");
+        displayAllTasks(tasks, taskCount);
+
+        //Obtaining which task to edit by using a do-while loop
+        do
+        {
+            printf("\nPlease enter the Id to update: ");
+            ObtainUserInput(&taskId);
+        } while (isIDPresent(tasks, taskCount, taskId, true) == false);
+
         printf("\nDo you want to change the description? (Y/N) ");
         int val = scanf("%c", &choice);
         while (getchar() != '\n');
@@ -262,8 +262,8 @@ void MenuCall_UpdateTask(TASK tasks[], int taskCount)
         else {
             updateTask(tasks, taskCount, taskId, NULL, newStatus);
         }
-    
-     //Wait for enter to return to Main Menu
+    }
+    //Wait for enter to return to Main Menu
     printf("\nPress Enter to go back to main menu...");
     char c = getchar();
 }
@@ -331,6 +331,7 @@ void MenuCall_DeleteTask(TASK tasks[], int* ptTaskCount)
 
 }
 
+//Test This function//
 //Checks if the ID is absent
 bool isIDAbsent(TASK tasks[], int taskCount, int newtaskId, bool verbose)
 {
@@ -360,6 +361,7 @@ bool isIDAbsent(TASK tasks[], int taskCount, int newtaskId, bool verbose)
     }
 }
 
+//Test This function//
 //Checks if the ID is present
 bool isIDPresent(TASK tasks[], int taskCount, int newtaskId, bool verbose)
 {
@@ -389,6 +391,7 @@ bool isIDPresent(TASK tasks[], int taskCount, int newtaskId, bool verbose)
     }
 }
 
+//Test This function//
 //Saving the data function
 void SaveDataToDrive(TASK tasks[], int taskCount, const char* filename)
 {   
@@ -412,6 +415,7 @@ void SaveDataToDrive(TASK tasks[], int taskCount, const char* filename)
     printf("\nData successfully saved to %s.", filename);
 }
 
+//Test This function//
 //Reading the data function
 void ReadTasksFromFile(TASK listofTasks[], int* TaskCount, const char* filename)
 {
