@@ -7,7 +7,7 @@ Implemented the following features
 - File Save functionality
 - File Load functionality
 - Frontend of the Update() task functionality
-
+- Implemented the unit tests
 
 **List of functions**
 - bool isIDAbsent(TASK tasks[], int taskCount, int newtaskId, bool verbose);
