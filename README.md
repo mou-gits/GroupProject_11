@@ -7,11 +7,11 @@ Implemented the following features
 - File Save functionality
 - File Load functionality
 - Frontend of the Update() task functionality
-- Frontend of the Search() task functionality
+
 
 **List of functions**
-- void DisplayMainMenu(void);
-- void LaunchProperAction(int userInput, TASK tasks[], int* ptTaskCount);
+- bool isIDAbsent(TASK tasks[], int taskCount, int newtaskId, bool verbose);
+- bool isIDPresent(TASK tasks[], int taskCount, int newtaskId, bool verbose);
 - void ObtainUserInput(int* ptUserInput);
 - void MenuCall_ListSingleTask(TASK tasks[], int taskCount);
 - void MenuCall_ListRangeTask(TASK tasks[], int taskCount);
@@ -19,8 +19,8 @@ Implemented the following features
 - void MenuCall_ListAllPendingTasks(TASK tasks[], int taskCount);
 - void MenuCall_UpdateTask(TASK tasks[], int taskCount);
 - void MenuCall_AddTask(TASK tasks[], int* ptTaskCount);
-- bool isProperId(TASK tasks[], int taskCount, int newtaskId);
-- bool isOKtoDelete(TASK tasks[], int taskCount, int newtaskId);
+- void SaveDataToDrive(TASK tasks[], int taskCount, const char* filename);
+- void ReadTasksFromFile(TASK listofTasks[], int* TaskCount, const char* filename);
 - void  MenuCall_DeleteTask(tasks, ptTaskCount);
 
 **Jason S. Little**
